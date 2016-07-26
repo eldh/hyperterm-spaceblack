@@ -1,8 +1,9 @@
 {
   "name": "hyperterm-spaceblack",
-  "version": "0.0.1",
-  "keywords": ["hyperterm"],
+  "version": "0.0.2",
+  "keywords": [
+    "hyperterm"
+  ],
   "description": "Spaceblack theme for hyperterm",
-  "dependencies": {
-  }
+  "dependencies": {}
 }
