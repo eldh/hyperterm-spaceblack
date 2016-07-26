@@ -2,6 +2,7 @@
 const foregroundColor = '#eff0eb';
 const backgroundColor = '#16181c';
 const black = backgroundColor;
+const darkBlack = '#0f1114';
 const yellow = '#f5f9c1';
 const magenta = '#ff6ac1';
 const brightBlack = '#2d3646';
@@ -25,7 +26,7 @@ exports.decorateConfig = config => {
 	return Object.assign({}, config, {
 		backgroundColor,
 		foregroundColor,
-		borderColor: black,
+		borderColor: darkBlack,
 		cursorColor: brightWhite,
 		colors: [
 			black,
@@ -49,8 +50,34 @@ exports.decorateConfig = config => {
 		],
 		css: `
 			${config.css || ''}
+			.tabs_list,
+			.tab_tab {
+				background-color: ${darkBlack};
+			}
+			.tab_active {
+				background-color: ${black};
+			}
+			.tab_textActive {
+				box-shadow: inset 0 1px 0 0px ${veryDarkGray};
+			}
+			.tab_textActive:after,
+			.tab_textActive:before {
+				content: '';
+				height: 100%;
+				width: 1px;
+				top: 0;
+				left: 0;
+				position: absolute;
+				background-color: ${veryDarkGray};
+			}
+			.tab_textActive:after {
+				left: calc(100% - 1px);
+			}
+			.tabs_list {
+				border-color: ${veryDarkGray} !important;
+			}
 			.tab_active:before {
-				border-color: ${brightBlack};
+				border-color: ${black};
 			}
 		`
 	});
