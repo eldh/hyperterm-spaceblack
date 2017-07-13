@@ -1,18 +1,20 @@
 const foregroundColor = '#eff0eb';
-const backgroundColor = '#16181c';
-const black = backgroundColor;
-const white = foregroundColor;
+const backgroundColor = 'rgba(0, 0, 0, 0.95)';
 const darkBlack = '#0f1114';
 const yellow = '#f5f9c1';
 const magenta = '#ff6ac1';
 const lightblack = '#2d3646';
-const lightWhite = foregroundColor;
 const darkGray = '#1d1f21';
-
 const cyan = '#8abeb7';
 const blue = '#81a2be';
 const green = '#acc697';
 const red = '#cc6666';
+
+const black = backgroundColor;
+const white = foregroundColor;
+const lightWhite = foregroundColor;
+const borderColor = backgroundColor;
+const cursorColor = foregroundColor;
 
 const colors = {
   black,
@@ -32,7 +34,7 @@ const colors = {
   lightCyan: cyan,
   lightWhite,
 };
-const css = (config) => `
+const css = (config = {}) => `
   ${config.css || ''}
   .tabs_list,
   .tab_tab {
@@ -63,16 +65,27 @@ const css = (config) => `
   .tab_active:before {
     border-color: ${black};
   }
+  .splitpane_divider {
+    background-color: ${lightblack} !important;
+  }
 `;
 
-exports.decorateConfig = config => {
+const termCSS = `
+span {
+  background-color: transparent !important;
+  color: ${foregroundColor} !important;
+}
+`;
+exports.onWindow = (browserWindow) => browserWindow.setVibrancy('dark');
+exports.decorateConfig = (config) => {
   return Object.assign({}, config, {
     backgroundColor,
-    foregroundColor,
-    borderColor: darkBlack,
-    cursorColor: lightWhite,
+    foregroundColor: yellow,
+    borderColor,
+    cursorColor,
     colors,
     css: css(config),
+    termCSS,
   });
 };
 
@@ -82,10 +95,13 @@ exports.middleware = () => (next) => (action) => {
   switch (action.type) {
   case 'CONFIG_LOAD':
   case 'CONFIG_RELOAD':
-    action.config.foregroundColor = foregroundColor;
+    action.config.foregroundColor = yellow;
     action.config.backgroundColor = backgroundColor;
-    action.config.cursorColor = foregroundColor;
+    action.config.borderColor = borderColor;
+    action.config.cursorColor = cursorColor;
     action.config.colors = colors;
+    action.config.css = css();
+    action.config.termCSS = termCSS;
   }
   next(action);
 };
